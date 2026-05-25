@@ -28,7 +28,7 @@ PWA:          Cliente ──▶ Icono en pantalla de inicio ──▶ Experienci
 ### 1.1 Instalar `next-pwa`
 
 ```bash
-npm install next-pwa
+pnpm add next-pwa
 ```
 
 ### 1.2 Configurar `next.config.js`
@@ -151,7 +151,7 @@ El `qr_token` es el UUID único que generó el webhook de Stripe (apunte 04). El
 ### 2.1 Instalar la librería QR
 
 ```bash
-npm install qrcode
+pnpm add qrcode
 ```
 
 ### 2.2 Componente `EntradaQR`
@@ -447,6 +447,4 @@ En móvil (Chrome), aparecerá el banner "Añadir a pantalla de inicio" automát
 
 ## Navegación
 
-| | |
-|---|---|
-| [← 04 — Stripe y Edge Functions](./04-stripe-y-edge-functions.md) | [06 — Realtime y Vercel →](./06-realtime-y-vercel.md) |
+[← 05 — Stripe y Edge Functions](./05-stripe-y-edge-functions.md) · [07 — Realtime y Vercel →](./07-realtime-y-vercel.md)

@@ -34,8 +34,8 @@ Las Edge Functions de Supabase corren cerca del usuario, son serverless y pueden
 ## Prerequisitos
 
 ```bash
-npm install stripe @stripe/stripe-js
-npm install -g supabase  # CLI de Supabase para desplegar Edge Functions
+pnpm add stripe @stripe/stripe-js
+pnpm add -g supabase  # CLI de Supabase para desplegar Edge Functions
 ```
 
 Variables de entorno necesarias:
@@ -453,6 +453,4 @@ export default async function PaginaExito({ searchParams }) {
 
 ## Navegación
 
-| | |
-|---|---|
-| [← 03 — Estado con Zustand](./03-estado-con-zustand.md) | [05 — PWA y Entradas QR →](./05-pwa-y-entradas-qr.md) |
+[← 04 — Estado con Zustand](./04-estado-con-zustand.md) · [06 — PWA y Entradas QR →](./06-pwa-y-entradas-qr.md)
