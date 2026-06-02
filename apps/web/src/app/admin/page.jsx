@@ -1,7 +1,10 @@
+//Configuración Inicial e Importaciones
 'use client'
 
 import { useState } from 'react'
 import { Plus, Trash2, Edit2 } from 'lucide-react'
+
+//Los Datos de Prueba (Base de Datos ficticia) 
 
 const USUARIOS_INIT = [
   { id: 1, nombre: 'Alex García',    email: 'alex@flex.es',    rol: 'Cliente', activo: true  },
@@ -26,14 +29,24 @@ const ROL_COLOR = {
   Admin:   'bg-red-500/20 text-red-400',
 }
 
+// Los Estados (La memoria de la página) 
+
 export default function PaginaAdmin() {
+
   const [tab, setTab] = useState('Usuarios')
+
   const [usuarios, setUsuarios] = useState(USUARIOS_INIT)
   const [productos, setProductos] = useState(PRODUCTOS_INIT)
+
   const [modalUsuario, setModalUsuario] = useState(false)
   const [modalProducto, setModalProducto] = useState(false)
+
+
   const [formU, setFormU] = useState({ nombre: '', email: '', rol: 'Cliente' })
   const [formP, setFormP] = useState({ nombre: '', categoria: 'Bebida', precio: '' })
+
+  // Las Funciones (Las acciones)
+  
 
   function crearUsuario() {
     if (!formU.nombre || !formU.email) return
@@ -51,6 +64,9 @@ export default function PaginaAdmin() {
 
   function eliminarUsuario(id) { setUsuarios(prev => prev.filter(u => u.id !== id)) }
   function eliminarProducto(id) { setProductos(prev => prev.filter(p => p.id !== id)) }
+
+
+  // El Diseño Visual (Lo que se renderiza)
 
   return (
     <div className="p-4 sm:p-8">
