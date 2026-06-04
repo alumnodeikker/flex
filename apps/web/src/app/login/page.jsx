@@ -1,20 +1,11 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import FlexLogo from '@/components/FlexLogo'
-import { createClient } from '@/lib/supabase/client'
-
-const RUTA_POR_ROL = {
-  cliente: '/',
-  staff:   '/staff',
-  portero: '/porteros',
-  admin:   '/admin',
-}
+import { login } from '@/lib/actions/auth'
 
 export default function PaginaLogin() {
-  const router = useRouter()
   const [email, setEmail]       = useState('')
   const [password, setPassword] = useState('')
   const [error, setError]       = useState('')
@@ -24,26 +15,10 @@ export default function PaginaLogin() {
     e.preventDefault()
     setError('')
     setCargando(true)
-
-    const supabase = createClient()
-
-    const { data, error: authError } = await supabase.auth.signInWithPassword({ email, password })
-
-    if (authError) {
-      setCargando(false)
-      setError('Email o contraseña incorrectos.')
-      return
-    }
-
-    // Obtener rol para redirigir a la ruta correcta
-    const { data: perfil } = await supabase
-      .from('perfiles')
-      .select('rol')
-      .eq('id', data.user.id)
-      .single()
-
-    const rol = perfil?.rol ?? 'cliente'
-    router.push(RUTA_POR_ROL[rol] ?? '/')
+    const formData = new FormData(e.target)
+    const result = await login(formData)
+    setCargando(false)
+    if (result?.error) setError(result.error)
   }
 
   return (
@@ -58,7 +33,7 @@ export default function PaginaLogin() {
         <div className="absolute inset-0 bg-linear-to-r from-zinc-950/60 to-zinc-950/10" />
         <div className="absolute bottom-12 left-10 right-10">
           <p className="text-white/80 text-xl font-light italic leading-relaxed">
-            "La noche que siempre<br />quisiste vivir."
+            La noche que siempre<br />quisiste vivir.
           </p>
         </div>
       </div>
@@ -92,6 +67,7 @@ export default function PaginaLogin() {
               <label className="text-zinc-500 text-xs block mb-1.5">Email</label>
               <input
                 type="email"
+                name="email"
                 placeholder="tu@email.com"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
@@ -103,6 +79,7 @@ export default function PaginaLogin() {
               <label className="text-zinc-500 text-xs block mb-1.5">Contraseña</label>
               <input
                 type="password"
+                name="password"
                 placeholder="••••••••"
                 value={password}
                 onChange={e => setPassword(e.target.value)}
