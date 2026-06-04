@@ -1,4 +1,4 @@
-// store/carritoStore.js
+// src/store/carritoStore.js
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
@@ -6,10 +6,10 @@ export const useCarritoStore = create(
   persist(
     (set, get) => ({
       items: [],
-      mesaId: null,
+      mesaNumero: null,   // número visible en la mesa (ej. 7), no el id de BD
 
-      setMesa(mesaId) {
-        set({ mesaId })
+      setMesaNumero(numero) {
+        set({ mesaNumero: numero })
       },
 
       agregarItem(producto) {
@@ -29,7 +29,7 @@ export const useCarritoStore = create(
       quitarItem(productoId) {
         set((estado) => ({
           items: estado.items
-            .map((i) => i.id === productoId ? { ...i, cantidad: i.cantidad - 1 } : i)
+            .map((i) => (i.id === productoId ? { ...i, cantidad: i.cantidad - 1 } : i))
             .filter((i) => i.cantidad > 0),
         }))
       },
@@ -41,20 +41,13 @@ export const useCarritoStore = create(
       },
 
       vaciarCarrito() {
-        set({ items: [], mesaId: null })
-      },
-
-      get totalUnidades() {
-        return get().items.reduce((acc, i) => acc + i.cantidad, 0)
-      },
-
-      get totalPrecio() {
-        return get().items.reduce((acc, i) => acc + i.precio * i.cantidad, 0)
+        set({ items: [], mesaNumero: null })
       },
     }),
     {
       name: 'flex-carrito',
-      partialize: (estado) => ({ items: estado.items, mesaId: estado.mesaId }),
+      // solo persistimos items y mesaNumero; el resto es estado de UI efímero
+      partialize: (estado) => ({ items: estado.items, mesaNumero: estado.mesaNumero }),
     }
   )
 )

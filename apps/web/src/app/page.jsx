@@ -1,65 +1,45 @@
 'use client'
 
 import { useState } from 'react'
+import { useCarritoStore } from '@/store/carritoStore'
 import { ShoppingCart, Plus, Minus, X } from 'lucide-react'
 
 const PRODUCTOS = [
-  { id: 1,  nombre: 'Cerveza Artesana',     categoria: 'Bebida', precio: 4.5,  img: 'https://images.unsplash.com/photo-1608270586620-248524c67de9?w=400&auto=format&fit=crop&q=80' },
-  { id: 2,  nombre: 'Gin Tonic Premium',    categoria: 'Bebida', precio: 9.0,  img: 'https://images.unsplash.com/photo-1560512823-829485b8bf24?w=400&auto=format&fit=crop&q=80' },
-  { id: 3,  nombre: 'Agua mineral',         categoria: 'Bebida', precio: 2.0,  img: 'https://images.unsplash.com/photo-1548839140-29a749e1cf4d?w=400&auto=format&fit=crop&q=80' },
-  { id: 4,  nombre: 'Mojito',               categoria: 'Bebida', precio: 8.5,  img: 'https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=400&auto=format&fit=crop&q=80' },
-  { id: 5,  nombre: 'Coca-Cola',            categoria: 'Bebida', precio: 3.0,  img: 'https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=400&auto=format&fit=crop&q=80' },
-  { id: 6,  nombre: 'Vino tinto',           categoria: 'Bebida', precio: 5.5,  img: 'https://images.unsplash.com/photo-1474722883778-792e7990302f?w=400&auto=format&fit=crop&q=80' },
-  { id: 7,  nombre: 'Nachos con guacamole', categoria: 'Comida', precio: 7.0,  img: 'https://images.unsplash.com/photo-1513456852971-30c0b8199d4d?w=400&auto=format&fit=crop&q=80' },
-  { id: 8,  nombre: 'Tabla de quesos',      categoria: 'Comida', precio: 12.0, img: 'https://images.unsplash.com/photo-1452195100486-9cc805987862?w=400&auto=format&fit=crop&q=80' },
-  { id: 9,  nombre: 'Alitas BBQ',           categoria: 'Comida', precio: 9.5,  img: 'https://images.unsplash.com/photo-1527477396000-e27163b481c2?w=400&auto=format&fit=crop&q=80' },
-  { id: 10, nombre: 'Patatas bravas',       categoria: 'Comida', precio: 5.0,  img: 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=400&auto=format&fit=crop&q=80' },
-  { id: 11, nombre: 'Hamburguesa Flex',     categoria: 'Comida', precio: 11.0, img: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&auto=format&fit=crop&q=80' },
-  { id: 12, nombre: 'Mini pizzas',          categoria: 'Comida', precio: 8.0,  img: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&auto=format&fit=crop&q=80' },
+  { id: 1, nombre: 'Cerveza Artesana', categoria: 'Bebida', precio: 4.5, img: 'https://images.unsplash.com/photo-1608270586620-248524c67de9?w=400&auto=format&fit=crop&q=80' },
+  { id: 2, nombre: 'Gin Tonic Premium', categoria: 'Bebida', precio: 9.0, img: 'https://images.unsplash.com/photo-1560512823-829485b8bf24?w=400&auto=format&fit=crop&q=80' },
+  { id: 3, nombre: 'Agua mineral', categoria: 'Bebida', precio: 2.0, img: 'https://images.unsplash.com/photo-1548839140-29a749e1cf4d?w=400&auto=format&fit=crop&q=80' },
+  { id: 4, nombre: 'Mojito', categoria: 'Bebida', precio: 8.5, img: 'https://images.unsplash.com/photo-1551538827-9c037cb4f32a?w=400&auto=format&fit=crop&q=80' },
+  { id: 5, nombre: 'Coca-Cola', categoria: 'Bebida', precio: 3.0, img: 'https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=400&auto=format&fit=crop&q=80' },
+  { id: 6, nombre: 'Vino tinto', categoria: 'Bebida', precio: 5.5, img: 'https://images.unsplash.com/photo-1474722883778-792e7990302f?w=400&auto=format&fit=crop&q=80' },
+  { id: 7, nombre: 'Nachos con guacamole', categoria: 'Comida', precio: 7.0, img: 'https://images.unsplash.com/photo-1513456852971-30c0b8199d4d?w=400&auto=format&fit=crop&q=80' },
+  { id: 8, nombre: 'Tabla de quesos', categoria: 'Comida', precio: 12.0, img: 'https://images.unsplash.com/photo-1452195100486-9cc805987862?w=400&auto=format&fit=crop&q=80' },
+  { id: 9, nombre: 'Alitas BBQ', categoria: 'Comida', precio: 9.5, img: 'https://images.unsplash.com/photo-1527477396000-e27163b481c2?w=400&auto=format&fit=crop&q=80' },
+  { id: 10, nombre: 'Patatas bravas', categoria: 'Comida', precio: 5.0, img: 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=400&auto=format&fit=crop&q=80' },
+  { id: 11, nombre: 'Hamburguesa Flex', categoria: 'Comida', precio: 11.0, img: 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&auto=format&fit=crop&q=80' },
+  { id: 12, nombre: 'Mini pizzas', categoria: 'Comida', precio: 8.0, img: 'https://images.unsplash.com/photo-1513104890138-7c749659a591?w=400&auto=format&fit=crop&q=80' },
 ]
 
 const CATEGORIAS = ['Todo', 'Bebida', 'Comida']
 
 export default function PaginaPedir() {
+  const { items, mesaNumero, setMesaNumero, agregarItem, quitarItem, eliminarItem, vaciarCarrito } = useCarritoStore()
+
+  const totalItems = useCarritoStore((s) => s.items.reduce((acc, i) => acc + i.cantidad, 0))
+  const total = useCarritoStore((s) => s.items.reduce((acc, i) => acc + i.precio * i.cantidad, 0))
+
   const [cat, setCat] = useState('Todo')
-  const [carrito, setCarrito] = useState([])
   const [carritoAbierto, setCarritoAbierto] = useState(false)
   const [pedidoEnviado, setPedidoEnviado] = useState(false)
   const [modalMesa, setModalMesa] = useState(false)
-  const [mesa, setMesa] = useState('')
 
   const productosFiltrados = cat === 'Todo' ? PRODUCTOS : PRODUCTOS.filter(p => p.categoria === cat)
 
-  function añadir(producto) {
-    setCarrito(prev => {
-      const existe = prev.find(i => i.id === producto.id)
-      if (existe) return prev.map(i => i.id === producto.id ? { ...i, cantidad: i.cantidad + 1 } : i)
-      return [...prev, { ...producto, cantidad: 1 }]
-    })
-  }
-
-  function quitar(id) {
-    setCarrito(prev => {
-      const item = prev.find(i => i.id === id)
-      if (item.cantidad === 1) return prev.filter(i => i.id !== id)
-      return prev.map(i => i.id === id ? { ...i, cantidad: i.cantidad - 1 } : i)
-    })
-  }
-
-  function eliminar(id) {
-    setCarrito(prev => prev.filter(i => i.id !== id))
-  }
-
-  const total = carrito.reduce((sum, i) => sum + i.precio * i.cantidad, 0)
-  const totalItems = carrito.reduce((sum, i) => sum + i.cantidad, 0)
-
-  function confirmarPedido(e) {
+  function handleConfirmarPedido(e) {
     e.preventDefault()
-    if (!mesa.trim()) return
+    if (!mesaNumero) return
     setModalMesa(false)
     setPedidoEnviado(true)
-    setCarrito([])
-    setMesa('')
+    vaciarCarrito()
     setTimeout(() => {
       setPedidoEnviado(false)
       setCarritoAbierto(false)
@@ -81,11 +61,10 @@ export default function PaginaPedir() {
             <button
               key={c}
               onClick={() => setCat(c)}
-              className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${
-                cat === c
-                  ? 'bg-gold-500 text-zinc-950'
-                  : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700'
-              }`}
+              className={`px-4 py-1.5 rounded-full text-sm font-medium transition-colors ${cat === c
+                ? 'bg-gold-500 text-zinc-950'
+                : 'bg-zinc-800 text-zinc-400 hover:bg-zinc-700'
+                }`}
             >
               {c}
             </button>
@@ -95,7 +74,7 @@ export default function PaginaPedir() {
         {/* Grid productos — 1 col móvil, 2 tablet, 3 desktop */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 pb-24">
           {productosFiltrados.map(p => {
-            const enCarrito = carrito.find(i => i.id === p.id)
+            const enCarrito = items.find(i => i.id === p.id)
             return (
               <div key={p.id} className="bg-zinc-900 rounded-xl border border-zinc-800 p-4 flex flex-col gap-3">
                 <div className="h-36 rounded-lg overflow-hidden bg-zinc-800">
@@ -110,14 +89,14 @@ export default function PaginaPedir() {
                   {enCarrito ? (
                     <div className="flex items-center gap-2">
                       <button
-                        onClick={() => quitar(p.id)}
+                        onClick={() => quitarItem(p.id)}
                         className="w-7 h-7 rounded-full bg-zinc-700 flex items-center justify-center hover:bg-zinc-600 transition-colors"
                       >
                         <Minus size={13} />
                       </button>
                       <span className="text-zinc-100 text-sm w-5 text-center font-medium">{enCarrito.cantidad}</span>
                       <button
-                        onClick={() => añadir(p)}
+                        onClick={() => agregarItem(p)}
                         className="w-7 h-7 rounded-full bg-gold-500 flex items-center justify-center hover:bg-gold-600 transition-colors"
                       >
                         <Plus size={13} className="text-zinc-950" />
@@ -125,7 +104,7 @@ export default function PaginaPedir() {
                     </div>
                   ) : (
                     <button
-                      onClick={() => añadir(p)}
+                      onClick={() => agregarItem(p)}
                       className="flex items-center gap-1 px-3 py-1 bg-gold-500 hover:bg-gold-600 text-zinc-950 text-xs font-semibold rounded-lg transition-colors"
                     >
                       <Plus size={12} /> Añadir
@@ -141,7 +120,7 @@ export default function PaginaPedir() {
       {/* Botón flotante carrito */}
       <button
         onClick={() => setCarritoAbierto(true)}
-        className="fixed bottom-6 right-6 z-10 w-14 h-14 bg-gold-500 hover:bg-gold-600 text-zinc-950 rounded-full shadow-lg flex items-center justify-center transition-colors"
+        className="fixed top-20 right-10 md:top-auto md:bottom-6 md:right-6 z-50 w-14 h-14 bg-gold-500 hover:bg-gold-600 text-zinc-950 rounded-full shadow-lg flex items-center justify-center transition-colors"
       >
         <ShoppingCart size={22} />
         {totalItems > 0 && (
@@ -161,9 +140,8 @@ export default function PaginaPedir() {
 
       {/* Drawer carrito */}
       <div
-        className={`fixed inset-y-0 right-0 z-30 w-full sm:w-96 bg-zinc-900 border-l border-zinc-800 flex flex-col transition-transform duration-300 ${
-          carritoAbierto ? 'translate-x-0' : 'translate-x-full'
-        }`}
+        className={`fixed inset-y-0 right-0 z-30 w-full sm:w-96 bg-zinc-900 border-l border-zinc-800 flex flex-col transition-transform duration-300 ${carritoAbierto ? 'translate-x-0' : 'translate-x-full'
+          }`}
       >
         {/* Cabecera drawer */}
         <div className="px-6 py-5 border-b border-zinc-800 flex items-center gap-2">
@@ -187,7 +165,7 @@ export default function PaginaPedir() {
               ¡Pedido enviado! Llega en 10–15 min.
             </div>
           )}
-          {carrito.length === 0 && !pedidoEnviado ? (
+          {items.length === 0 && !pedidoEnviado ? (
             <div className="flex flex-col items-center justify-center h-full gap-3 text-center">
               <ShoppingCart size={40} className="text-zinc-700" />
               <p className="text-zinc-500 text-sm">Tu pedido está vacío</p>
@@ -195,7 +173,7 @@ export default function PaginaPedir() {
             </div>
           ) : (
             <ul className="space-y-3">
-              {carrito.map(item => (
+              {items.map(item => (
                 <li key={item.id} className="flex items-center gap-3 bg-zinc-800/50 rounded-xl px-3 py-3">
                   <img src={item.img} alt={item.nombre} className="w-10 h-10 rounded-lg object-cover shrink-0" />
                   <div className="flex-1 min-w-0">
@@ -206,7 +184,7 @@ export default function PaginaPedir() {
                     {(item.precio * item.cantidad).toFixed(2)} €
                   </span>
                   <button
-                    onClick={() => eliminar(item.id)}
+                    onClick={() => eliminarItem(item.id)}
                     className="text-zinc-600 hover:text-red-400 transition-colors shrink-0"
                   >
                     <X size={15} />
@@ -218,7 +196,7 @@ export default function PaginaPedir() {
         </div>
 
         {/* Footer con total y botón */}
-        {carrito.length > 0 && (
+        {items.length > 0 && (
           <div className="px-4 py-4 border-t border-zinc-800">
             <div className="flex justify-between items-center mb-4">
               <span className="text-zinc-400 text-sm">Total</span>
@@ -233,12 +211,13 @@ export default function PaginaPedir() {
           </div>
         )}
       </div>
+
       {/* Modal número de mesa */}
       {modalMesa && (
         <div className="fixed inset-0 z-50 flex items-center justify-center">
           <div className="absolute inset-0 bg-black/70" onClick={() => setModalMesa(false)} />
           <form
-            onSubmit={confirmarPedido}
+            onSubmit={handleConfirmarPedido}
             className="relative bg-zinc-900 border border-zinc-700 rounded-2xl p-8 w-full max-w-sm mx-4 shadow-2xl"
           >
             <h2 className="text-lg font-bold text-zinc-100 mb-1">¿En qué mesa estás?</h2>
@@ -247,8 +226,8 @@ export default function PaginaPedir() {
               type="number"
               min="1"
               placeholder="Ej. 7"
-              value={mesa}
-              onChange={e => setMesa(e.target.value)}
+              value={mesaNumero ?? ''}
+              onChange={e => setMesaNumero(Number(e.target.value))}
               autoFocus
               className="w-full bg-zinc-800 border border-zinc-700 rounded-xl px-4 py-3 text-2xl text-center font-bold text-zinc-100 outline-none focus:border-gold-500 transition-colors mb-6"
             />
@@ -262,7 +241,7 @@ export default function PaginaPedir() {
               </button>
               <button
                 type="submit"
-                disabled={!mesa.trim()}
+                disabled={!mesaNumero}
                 className="flex-1 py-2.5 bg-gold-500 hover:bg-gold-600 disabled:opacity-40 disabled:cursor-not-allowed text-zinc-950 font-bold rounded-xl text-sm transition-colors"
               >
                 Confirmar pedido
