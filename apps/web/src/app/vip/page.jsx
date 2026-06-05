@@ -9,6 +9,8 @@ export default async function PaginaVIP() {
     .select('id, nombre, descripcion, capacidad, precio_hora, imagen_url, activa')
     .order('precio_hora')
 
+    console.log(salas)
+
   if (error) {
     return (
       <div className="flex items-center justify-center min-h-full">

@@ -25,7 +25,7 @@ export function usePedidos() {
               producto_id,
               cantidad,
               precio_unitario,
-              productos (nombre, imagen)
+              productos (nombre, imagen_url)
             )
           `)
           .eq('usuario_id', usuario.id)
