@@ -41,7 +41,8 @@ export async function POST(req) {
         .eq('id', id)
         .eq('estado_pago', 'pendiente')
     }
-
+    console.log("session: ", session)
+    console.log("tipo: ", tipo)
     if (tipo === 'pedido') {
       // Igual: solo actualizamos estado_pago, el estado de cocina lo gestiona el staff
       await supabase
